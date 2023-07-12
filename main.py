@@ -28,7 +28,7 @@ def get_target():
         print("You dont have right permission for this path")
 
 
-def fech_images(source_path):
+def fetch_images(source_path):
   for file in os.listdir(source_path):
     extention = str.lower(os.path.basename(file).split(".")[-1])
     if extention in ["jpg", "jpeg", "png"]:
@@ -47,7 +47,7 @@ def convert(source_path, target_path, images):
 def main():
    source_path = get_source()
    target_path = get_target()
-   fech_images(source_path)
+   fetch_images(source_path)
    convert(source_path,target_path, images)
    print("Conversion completed successfully")
 
