@@ -1,6 +1,8 @@
 import os
 from PIL import Image
-import pillow_heif 
+import pillow_heif
+import numpy as np
+import multiprocessing
 
 images = []
 
@@ -27,6 +29,10 @@ def get_target():
       except:
         print("You dont have right permission for this path")
 
+def get_threads():
+  threads = 1
+  threads = int(input("Number of threads (don't know leave it blank): "))
+  return threads
 
 def fetch_images(source_path):
   for file in os.listdir(source_path):
@@ -45,11 +51,17 @@ def convert(source_path, target_path, images):
     count += 1
 
 def main():
-   source_path = get_source()
-   target_path = get_target()
-   fetch_images(source_path)
-   convert(source_path,target_path, images)
-   print("Conversion completed successfully")
+  source_path = get_source()
+  target_path = get_target()
+  threads = get_threads()
+  fetch_images(source_path)
+  jobs = []
+  splitted_array = np.array_split(images, threads)
+  for i in range(threads):
+    p = multiprocessing.Process(target=convert, args=(source_path,target_path,splitted_array[i],))
+    jobs.append(p)
+    p.start()
+  print("Conversion completed successfully")
 
 if __name__ == "__main__":
     main()
