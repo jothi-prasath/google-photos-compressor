@@ -30,9 +30,13 @@ def get_target():
         print("You dont have right permission for this path")
 
 def get_threads():
-  threads = 1
-  threads = int(input("Number of threads (don't know leave it blank): "))
-  return threads
+  threads = input("Number of threads (don't know leave it blank): ")
+  if threads == "":
+    threads=1
+    int(threads)
+    return int(threads)
+  else:
+    return int(threads)
 
 def fetch_images(source_path):
   for file in os.listdir(source_path):
