@@ -22,7 +22,9 @@ def analyse(source_path):
          counts["heic"] += 1
       elif extention in ["avif"]:
          counts["avif"] += 1
-      elif extention in ["mp4", "mkv", "3gp"]:
+      elif extention in ["gif"]:
+         counts["gif"] += 1
+      elif extention in ["mp4", "mkv", "mov", "3gp"]:
          counts["videos"] += 1
       else: 
          counts["other"] += 1
@@ -35,6 +37,7 @@ def main():
    print("No of PNG files: ", counts["png"])
    print("No of HEIC files: ", counts["heic"])
    print("No of AVIF files: ", counts["avif"])
+   print("No of GIF files: ", counts["gif"])
    print("No of video files: ", counts["videos"])
    print("No of Other files: ", counts["other"])
    print("---------------------------------")
