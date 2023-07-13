@@ -7,6 +7,7 @@ import shutil
 
 threads = 4
 images = []
+compressed_images = []
 others = []
 
 def get_source():
@@ -37,6 +38,8 @@ def fetch_images(source_path):
     extention = str.lower(os.path.basename(file).split(".")[-1])
     if extention in ["jpg", "jpeg", "png"]:
       images.append(file)
+    elif extention in ["avif", "heic"]:
+      compressed_images.append(file)
     else:
       others.append(file)
 
@@ -51,16 +54,21 @@ def convert(source_path, target_path, images):
       temp_image.save(os.path.join(target_path, image.strip(image.split(".")[-1]) +"avif"),"avif")
     count += 1
 
-def copy_other_files(source_path,target_path,others):
-  target_path = os.path.join(target_path,"non_image_files")
-  if os.path.exists(target_path):
-    return
-  else:
-    os.makedirs(target_path)
-  for other in others:
-    source_file = os.path.join(source_path, other)
-    print("Copying {}".format(other))
-    shutil.copyfile(source_file, target_path)
+def copy_files(source_path,target_path,compressed_images,others):
+  compressed_images_path = os.path.join(target_path, "compressed_images")
+  other_files_path = os.path.join(target_path, "other_files")
+  os.makedirs(compressed_images_path, exist_ok=True)
+  os.makedirs(other_files_path, exist_ok=True)
+  for image in compressed_images:
+      source_file = os.path.join(source_path, image)
+      target_file = os.path.join(compressed_images_path, image)
+      print("Copying {}".format(image))
+      shutil.copyfile(source_file, target_file)
+  for file in others:
+      source_file = os.path.join(source_path, file)
+      target_file = os.path.join(other_files_path, file)
+      print("Copying {}".format(file))
+      shutil.copyfile(source_file, target_file)
 
 def main():
   source_path = get_source()
@@ -73,7 +81,7 @@ def main():
   pool.close()
   pool.join()
   print("Conversion completed successfully")
-  copy_other_files(source_path,target_path,others)
+  copy_files(source_path,target_path,compressed_images,others)
   print("finished 🎉")
 
 if __name__ == "__main__":
