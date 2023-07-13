@@ -4,6 +4,7 @@ import pillow_heif
 import numpy as np
 import multiprocessing
 
+threads = 1
 images = []
 
 def get_source():
@@ -29,15 +30,6 @@ def get_target():
       except:
         print("You dont have right permission for this path")
 
-def get_threads():
-  threads = input("Number of threads (don't know leave it blank): ")
-  if threads == "":
-    threads=1
-    int(threads)
-    return int(threads)
-  else:
-    return int(threads)
-
 def fetch_images(source_path):
   for file in os.listdir(source_path):
     extention = str.lower(os.path.basename(file).split(".")[-1])
@@ -57,7 +49,6 @@ def convert(source_path, target_path, images):
 def main():
   source_path = get_source()
   target_path = get_target()
-  threads = get_threads()
   fetch_images(source_path)
   jobs = []
   splitted_array = np.array_split(images, threads)
