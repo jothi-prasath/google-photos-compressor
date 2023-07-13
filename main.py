@@ -46,9 +46,9 @@ def convert(source_path, target_path, images):
   count=1
   for image in images:
     temp_image = Image.open(os.path.join(source_path, image))
-    print("Converting {} out of {}  {}".format(count,total_count,image))
-    temp_image.save(os.path.join(target_path, image.strip(image.split(".")[-1]) +"avif"),"avif")
-    temp_image.close()
+    with Image.open(os.path.join(source_path, image)) as temp_image:
+      print("Converting {} out of {}  {}".format(count,total_count,image))
+      temp_image.save(os.path.join(target_path, image.strip(image.split(".")[-1]) +"avif"),"avif")
     count += 1
 
 def copy_other_files(source_path,target_path,others):
